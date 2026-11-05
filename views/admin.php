@@ -62,6 +62,8 @@ $mensaje = $_GET['resultado'] ?? '';
 
             <?php if ($mensaje === 'eliminado'): ?>
                 <p class="admin-aviso" role="status">El usuario y todos sus chats se han eliminado.</p>
+            <?php elseif ($mensaje === 'actualizado'): ?>
+                <p class="admin-aviso" role="status">Los datos del usuario se han actualizado.</p>
             <?php elseif ($mensaje === 'error'): ?>
                 <p class="mensaje-error" role="alert">No se pudo eliminar el usuario. Inténtalo de nuevo.</p>
             <?php elseif ($mensaje === 'invalido'): ?>
@@ -83,17 +85,18 @@ $mensaje = $_GET['resultado'] ?? '';
                         <?php foreach ($usuarios as $usuario): ?>
                             <tr>
                                 <td><?= (int) $usuario['id'] ?></td>
-                                <td><?= htmlspecialchars($usuario['nombre'], ENT_QUOTES, 'UTF-8') ?></td>
-                                <td><?= htmlspecialchars($usuario['username'], ENT_QUOTES, 'UTF-8') ?></td>
-                                <td><?= htmlspecialchars($usuario['role_name'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars($usuario['nombre']) ?></td>
+                                <td><?= htmlspecialchars($usuario['username']) ?></td>
+                                <td><?= htmlspecialchars($usuario['role_name']) ?></td>
                                 <td>
+                                    <a href="admin_editar_usuario.php?id=<?= (int) $usuario['id'] ?>">Editar</a>
                                     <?php if ((int) $usuario['id'] !== (int) $_SESSION['user_id']): ?>
-                                        <form action="../proc/admin_eliminar_usuario.php" method="POST"
+                                        <form class="admin-accion" action="../proc/admin_eliminar_usuario.php" method="POST"
                                               onsubmit="return confirm('¿Eliminar este usuario y todos sus chats?');">
                                             <input type="hidden" name="csrf_token"
                                                    value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
                                             <input type="hidden" name="user_id" value="<?= (int) $usuario['id'] ?>">
-                                            <button class="boton boton-eliminar" type="submit">Eliminar</button>
+                                            <button type="submit">Eliminar</button>
                                         </form>
                                     <?php else: ?>
                                         <span>Tu cuenta</span>
