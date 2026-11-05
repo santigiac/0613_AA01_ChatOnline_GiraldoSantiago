@@ -140,6 +140,66 @@ h1 {
     background: #eef0ff;
 }
 
+.admin-cabecera {
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.admin-contenido {
+    width: min(100% - 32px, 1100px);
+}
+
+.admin-tarjeta {
+    padding: 36px;
+}
+
+.admin-tarjeta h1 {
+    font-size: 2.2rem;
+}
+
+.admin-tabla-contenedor {
+    margin-top: 24px;
+    overflow-x: auto;
+}
+
+.admin-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-tabla th,
+.admin-tabla td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.admin-tabla th {
+    color: var(--color-texto-suave);
+    font-size: 0.85rem;
+}
+
+.admin-tabla form {
+    margin: 0;
+}
+
+.boton-eliminar {
+    padding: 8px 14px;
+    color: #ffffff;
+    background: #b42318;
+}
+
+.boton-eliminar:hover {
+    background: #912018;
+}
+
+.admin-aviso {
+    padding: 12px 14px;
+    color: #176b3a;
+    background: #eaf7ef;
+    border-radius: 10px;
+}
+
 .formulario-tarjeta h1 {
     font-size: 2.2rem;
 }

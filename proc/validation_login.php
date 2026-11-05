@@ -20,8 +20,14 @@ if ($username === '' || strlen($username) > 20 || !preg_match('/^[a-zA-Z0-9]{3,2
     exit();
 }
 
-// Preparar y ejecutar la consulta para obtener el usuario
-$stmt = $conn->prepare('SELECT id, username, password FROM usuarios WHERE username = :username LIMIT 1');
+// Consulto el usuario para validarlo
+$stmt = $conn->prepare(
+    'SELECT usuarios.id, usuarios.username, usuarios.password, roles.nombre AS role_name
+     FROM usuarios
+     INNER JOIN roles ON roles.id = usuarios.role_id
+     WHERE usuarios.username = :username
+     LIMIT 1'
+);
 $stmt->execute([':username' => $username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -31,7 +37,8 @@ if ($user && password_verify($password, $user['password'])) {
     session_regenerate_id(true);
     $_SESSION['user_id'] = (int) $user['id'];
     $_SESSION['username'] = $user['username'];
-    header('Location: ../views/chat.php');
+    $_SESSION['role'] = $user['role_name'];
+    header('Location: ' . ($user['role_name'] === 'admin' ? '../views/admin.php' : '../views/chat.php'));
     exit();
 }
 // Si el usuario no existe o la contraseña es incorrecta, mostrar un mensaje de error

@@ -55,15 +55,24 @@ if ($stmt->fetchColumn()) {
     require __DIR__ . '/../views/registro.php';
     exit();
 }
-// Insertar el nuevo usuario en la base de datos
+$roleStmt = $conn->prepare('SELECT id FROM roles WHERE nombre = :nombre');
+$roleStmt->execute([':nombre' => 'usuario']);
+$roleId = $roleStmt->fetchColumn();
+
+if ($roleId === false) {
+    throw new RuntimeException('No existe el rol usuario en la base de datos.');
+}
+
+// Insertar el nuevo usuario en la base de datos con el rol normal
 $stmt = $conn->prepare(
-    'INSERT INTO usuarios (nombre, username, password)
-     VALUES (:nombre, :username, :password)'
+    'INSERT INTO usuarios (nombre, username, password, role_id)
+     VALUES (:nombre, :username, :password, :role_id)'
 );
 $stmt->execute([
     ':nombre' => $nombre,
     ':username' => $username,
     ':password' => password_hash($password, PASSWORD_DEFAULT),
+    ':role_id' => $roleId,
 ]);
 
 header('Location: ../views/login.php?registro=ok');
